@@ -1,0 +1,22 @@
+{
+  "name": "tn_urbane_pay",
+  "version": "1.0.0",
+  "description": "Govt portal (tnurbanepay.tn.gov.in) மூலம் property tax details fetch பண்றதுக்கான tool.",
+  "main": "debug.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/deozone11-beep/TN_Urbane_Pay.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/deozone11-beep/TN_Urbane_Pay/issues"
+  },
+  "homepage": "https://github.com/deozone11-beep/TN_Urbane_Pay#readme"
+}
