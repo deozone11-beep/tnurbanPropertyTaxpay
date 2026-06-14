@@ -159,7 +159,6 @@ legend { background: #4caf50; color: #fff; font-weight: bold; font-size: 13px; p
 </div>
 
 <script>
-// Auto-detect: Railway-ல் same origin, local-ல் localhost:3000
 const PROXY = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
   ? 'http://localhost:3000'
   : window.location.origin;
@@ -242,6 +241,18 @@ function clearAll() {
   currentRef=''; currentFormData=null;
 }
 document.getElementById('refInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doSearch(); });
+
+// ── URL Parameter Auto-Search ──
+// Usage: ?ref=082/001/900540
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const ref = params.get('ref') || params.get('REF') || params.get('Ref');
+  if (ref) {
+    document.getElementById('refInput').value = ref.trim();
+    // Small delay to let page render
+    setTimeout(doSearch, 300);
+  }
+})();
 
 /* ════════════════════════════════════════════
    OPTION 1 — Normal full-page POST to govt site
