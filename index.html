@@ -159,7 +159,10 @@ legend { background: #4caf50; color: #fff; font-weight: bold; font-size: 13px; p
 </div>
 
 <script>
-const PROXY = 'http://localhost:3000';
+// Auto-detect: Railway-ல் same origin, local-ல் localhost:3000
+const PROXY = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3000'
+  : window.location.origin;
 let currentRef = '';
 let currentFormData = null;
 
