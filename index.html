@@ -301,14 +301,13 @@ function doPaymentOption1() {
     form.appendChild(inp);
   });
 
-  // document.body.appendChild(form);
-  // form.submit();
-  // setTimeout(() => document.body.removeChild(form), 2000);
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(() => document.body.removeChild(form), 2000);
 
-  // setPayStatus(`<div class="msg" style="color:#2a7a2a;background:#f0fff0;border:1px solid #2a7a2a;padding:10px;border-radius:4px">
-  //   ✅ <b>Option 1: Submitted!</b> புதுசா tab-ல் confirmation page வரும்.<br>
-  //   <small>Ref: <b>${currentRef}</b> | Amount: <b>₹${amount}</b></small>
-  // </div>`);
+  setPayStatus(`<div class="msg" style="color:#2a7a2a;background:#f0fff0;border:1px solid #2a7a2a;padding:10px;border-radius:4px">
+    ✅ <b>Payment Initiated!</b>
+  </div>`);
 }
 
 /* ════════════════════════════════════════════
