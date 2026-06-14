@@ -1,6 +1,7 @@
 const http = require('http');
 const https = require('https');
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+const BASE_URL = process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : `http://localhost:${PORT}`;
 
 const sessionStore = {};
 
@@ -224,7 +225,7 @@ async function handlePayAndBridge(body, res) {
 
   console.log(`✅ token=${token} session=${session.sessionId.substring(0,12)}...`);
   res.writeHead(200, {'Content-Type':'application/json'});
-  res.end(JSON.stringify({ success:true, token, bridgeUrl:`http://localhost:${PORT}/bridge?token=${token}` }));
+  res.end(JSON.stringify({ success:true, token, bridgeUrl:`${BASE_URL}/bridge?token=${token}` }));
 }
 
 // ── /bridge?token ─────────────────────────────────────────────────────────────
@@ -346,6 +347,9 @@ async function handleBridgeConfirm(token, body, res) {
 }
 
 // ── HTTP SERVER ───────────────────────────────────────────────────────────────
+const fs = require('fs');
+const path = require('path');
+
 const server = http.createServer(async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, GET, OPTIONS');
@@ -355,6 +359,31 @@ const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   let body = '';
   req.on('data', c => body += c);
+
+  // Serve index.html — inject dynamic PROXY URL
+  if (req.method === 'GET' && (url.pathname === '/' || url.pathname === '/index.html')) {
+    req.on('end', () => {
+      fs.readFile(path.join(__dirname, 'index.html'), 'utf8', (err, data) => {
+        if (err) { res.writeHead(404); res.end('index.html not found'); return; }
+        data = data.replace("const PROXY = 'http://localhost:3000'", `const PROXY = '${BASE_URL}'`);
+        res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+        res.end(data);
+      });
+    });
+    return;
+  }
+
+  // Serve logo.png
+  if (req.method === 'GET' && url.pathname === '/logo.png') {
+    req.on('end', () => {
+      fs.readFile(path.join(__dirname, 'logo.png'), (err, data) => {
+        if (err) { res.writeHead(404); res.end('not found'); return; }
+        res.writeHead(200, {'Content-Type': 'image/png'});
+        res.end(data);
+      });
+    });
+    return;
+  }
 
   // /fetch-property
   if (req.method === 'POST' && url.pathname === '/fetch-property') {
@@ -412,7 +441,7 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`\n✅ TN Property Tax Proxy → http://localhost:${PORT}`);
+  console.log(`\n✅ TN Property Tax Proxy → ${BASE_URL}`);
   console.log(`  POST /fetch-property`);
   console.log(`  POST /pay-and-bridge   ← search+submit+token`);
   console.log(`  GET  /bridge?token=    ← conf page with proxied captcha`);
