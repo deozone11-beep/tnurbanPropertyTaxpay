@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TN Property Tax - Citizen Web Portal</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; font-size: 13px; background: #eee; color: #222; }
+.page { max-width: 1100px; margin: 10px auto; background: #fff; padding: 14px 18px; }
+.top-header { display: flex; align-items: center; gap: 12px; border-bottom: 2px solid #4caf50; padding-bottom: 10px; margin-bottom: 10px; }
+.logo { width: 54px; height: 54px; background: #8B0000; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+.logo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+.logo-text { font-size: 12px; line-height: 1.7; }
+.logo-text strong { font-size: 13px; display: block; }
+.logo-text .green { color: #4caf50; }
+.portal-title { margin-left: auto; font-size: 24px; font-weight: normal; color: #41505F; white-space: nowrap; }
+.form-box { border: 2px solid #4caf50; border-radius: 4px; padding: 14px 18px; margin-bottom: 14px; }
+.radio-label { font-weight: bold; font-size: 13px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+.radio-label input { accent-color: #4caf50; transform: scale(1.2); }
+.field-label { font-size: 12px; color: #555; margin-bottom: 3px; margin-top: 8px; }
+.inp { border: 1px solid #aaa; padding: 5px 8px; font-size: 13px; font-family: monospace; width: 200px; border-radius: 2px; }
+.btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.btn { padding: 5px 14px; border: 1px solid #aaa; background: #f5f5f5; cursor: pointer; font-size: 12px; border-radius: 2px; }
+.btn:hover { background: #e8e8e8; }
+.btn-green { background: #4caf50; color: #fff; border-color: #388e3c; font-weight: bold; }
+.btn-green:hover { background: #388e3c; }
+.btn-green:disabled { opacity: 0.5; cursor: not-allowed; }
+.blink-notice { color: red; font-size: 12px; line-height: 1.7; margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px; }
+fieldset { border: 1px solid #4caf50; border-radius: 3px; margin-bottom: 12px; padding: 10px 14px; }
+legend { background: #4caf50; color: #fff; font-weight: bold; font-size: 13px; padding: 3px 10px; border-radius: 2px; }
+.tbl { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 6px; }
+.tbl th { background: #4682B4; color: #fff; border: 1px solid #999; padding: 7px 8px; text-align: center; font-weight: bold; }
+.tbl td { border: 1px solid #ccc; padding: 6px 8px; text-align: center; }
+.tbl tr:nth-child(even) td { background: #f9f9f9; }
+.tbl tfoot td { font-weight: bold; background: #e8f5e9; }
+.status-ok { color: #2a7a2a; font-weight: bold; }
+.print-btn { background: #4682B4; color: #fff; border: none; padding: 4px 10px; cursor: pointer; font-size: 11px; border-radius: 2px; }
+.det-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; font-size: 12px; margin-top: 6px; }
+.det-row { display: flex; gap: 6px; align-items: baseline; padding: 3px 0; }
+.det-label { color: #444; min-width: 160px; flex-shrink: 0; }
+.det-value { color: #222; }
+.det-value.bold-blue { color: darkblue; font-weight: bold; }
+.due-tbl th { background: #777; color: #fff; padding: 5px 6px; }
+.due-tbl td { padding: 5px 6px; }
+.amt-row { display: flex; gap: 40px; padding: 8px 0; font-size: 13px; border-top: 1px solid #ddd; margin-top: 8px; flex-wrap: wrap; }
+.amt-item span { font-weight: bold; }
+.payment-input-row { text-align: right; margin: 14px 0 6px; font-size: 13px; }
+.payment-input-row input { border: 1px solid #aaa; padding: 6px 8px; width: 220px; font-size: 13px; height: 32px; margin-left: 8px; }
+.pay-options { border-top: 2px dashed #ccc; margin-top: 14px; padding-top: 14px; }
+.pay-options-title { font-size: 12px; color: #555; font-weight: bold; margin-bottom: 10px; }
+.opt-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.opt-box { flex: 1; min-width: 220px; border: 1px solid #ccc; border-radius: 4px; padding: 10px 12px; background: #fafafa; }
+.opt-box-title { font-weight: bold; font-size: 12px; margin-bottom: 4px; }
+.opt-box-desc { font-size: 11px; color: #666; margin-bottom: 8px; line-height: 1.5; }
+.submit-btn { color: #fff; border: none; padding: 8px 18px; font-size: 13px; font-weight: bold; cursor: pointer; border-radius: 3px; width: 100%; }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-opt1 { background: #4caf50; }
+.btn-opt1:hover:not(:disabled) { background: #388e3c; }
+.btn-opt2 { background: #1565c0; }
+.btn-opt2:hover:not(:disabled) { background: #0d47a1; }
+.spinner { display: inline-block; width: 13px; height: 13px; border: 2px solid #ccc; border-top-color: #4caf50; border-radius: 50%; animation: spin 0.7s linear infinite; vertical-align: middle; margin-right: 6px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.msg { padding: 10px; color: #666; font-size: 13px; }
+.err { color: #c00; }
+.result-section { display: none; }
+@media print { .form-box { display: none !important; } body { background: #fff; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="top-header">
+    <div class="logo"><img src="logo.png" alt="TN Logo"></div>
+    <div class="logo-text">
+      <strong>Commissionerate of Municipal Administration</strong>
+      <span class="green">நகராட்சி நிர்வாக ஆணையரகம்</span><br>
+      <span>Enabling ULBs for better services</span>
+    </div>
+    <div class="portal-title">Citizen Web Portal</div>
+  </div>
+
+  <div class="form-box">
+    <div class="radio-label"><input type="radio" checked> Municipality/Corporation</div>
+    <div class="field-label">Assessment Number</div>
+    <input type="text" class="inp" id="refInput" placeholder="000/000/00000" value="082/001/900540">
+    <!-- <div class="field-label" style="margin-top:10px">Old Assessment Number</div>
+    <input type="text" class="inp" id="oldRefInput" placeholder=""> -->
+    <div class="btn-row">
+      <button class="btn btn-green" id="searchBtn" onclick="doSearch()">Search</button>
+      <button class="btn" onclick="window.print()">Print</button>
+      <!-- <button class="btn" onclick="clearAll()">Back</button> -->
+    </div>
+    <div class="blink-notice">
+      As per Ward Delimitation Process Assessment Numbers are revised. Kindly confirm your Name and Assessment Number before making payment.<br>
+      வார்டு மறுவரையறையின் படி வரிவிதிப்பு எண்களில் மாற்றம் செய்யப்பட்டுள்ளது. எனவே, வரி செலுத்தும் முன்பு உங்களுடைய பெயர் மற்றும் வரிவிதிப்பு எண்ணை சரிபார்க்கவும்.
+    </div>
+  </div>
+
+  <div id="statusMsg"></div>
+
+  <fieldset class="result-section" id="sec-lastpay">
+    <legend>Property Tax Last Payment Details</legend>
+    <table class="tbl">
+      <thead><tr><th>S.No.</th><th>Receipt Number</th><th>Assessment Number</th><th>Old Assessment Number</th><th>Receipt Date</th><th>Amount</th><th>Usage</th><th>Status</th><th>Print</th></tr></thead>
+      <tbody id="body-lastpay"></tbody>
+    </table>
+  </fieldset>
+
+  <fieldset class="result-section" id="sec-assessee">
+    <legend>Property Tax Assessee Details</legend>
+    <div class="det-grid" id="grid-assessee"></div>
+  </fieldset>
+
+  <fieldset class="result-section" id="sec-due">
+    <legend>Property Tax Due Details</legend>
+    <div style="overflow-x:auto">
+      <table class="tbl due-tbl">
+        <thead><tr><th>S.No.</th><th>Period</th><th>Tax Demand Amount</th><th>Penalty Demand Amount</th><th>Tax Collected Amount</th><th>Penalty Collected Amount</th><th>Tax Balance Amount</th><th>Balance Penalty Amount</th><th>Total Balance Amount</th><th>Delay Penalty</th><th>Incentive</th><th>Cumulative Balance Amount</th></tr></thead>
+        <tbody id="body-due"></tbody>
+        <tfoot id="foot-due"></tfoot>
+      </table>
+    </div>
+    <div class="amt-row">
+      <div class="amt-item">Balance Amount : <span id="val-balance"></span></div>
+      <div class="amt-item">Advance Amount : <span id="val-advance"></span></div>
+      <div class="amt-item">Payable Amount : <span id="val-payable"></span></div>
+    </div>
+    <div class="payment-input-row">
+      <label style="font-weight:bold;color:red">* Payment Amount</label>
+      <input type="text" id="paymentAmount" placeholder="Enter amount to pay">
+    </div>
+
+    <div id="pay-status"></div>
+
+    <div class="pay-options">
+      <div class="pay-options-title">Payment Method</div>
+      <div class="opt-row">
+
+        <div class="opt-box">
+          <!-- <div class="opt-box-title">⚡ Option 1 — Direct Govt Site</div> -->
+          <!-- <div class="opt-box-desc">
+            Search session வச்சே browser directly <b>tnurbanepay.tn.gov.in</b>-க்கு normal page load ஆகும். Govt site-ல் confirmation page வரும்.
+          </div> -->
+          <button class="submit-btn btn-opt1" id="submitBtn1" onclick="doPaymentOption1()">Submit → Pay Now</button>
+        </div>
+
+        <!-- <div class="opt-box">
+          <div class="opt-box-title">🔒 Option 2 — Session Bridge</div>
+          <div class="opt-box-desc">
+            Server: session → Search → Submit பண்ணும்.<br>
+            Confirmation page <b>localhost:3000/bridge</b>-ல் திறக்கும் — captcha சரியா load ஆகும், confirm பண்ண work ஆகும்.
+          </div>
+          <button class="submit-btn btn-opt2" id="submitBtn2" onclick="doPaymentOption2()">Submit → Pay (Option 2)</button>
+        </div> -->
+
+      </div>
+    </div>
+  </fieldset>
+</div>
+
+<script>
+const PROXY = 'http://localhost:3000';
+let currentRef = '';
+let currentFormData = null;
+
+function setStatus(html) { document.getElementById('statusMsg').innerHTML = html; }
+function setPayStatus(html) { document.getElementById('pay-status').innerHTML = html; }
+function showSections(show) {
+  ['sec-lastpay','sec-assessee','sec-due'].forEach(id =>
+    document.getElementById(id).style.display = show ? 'block' : 'none');
+}
+function setBtns(disabled, l1, l2) {
+  const b1 = document.getElementById('submitBtn1');
+  const b2 = document.getElementById('submitBtn2');
+  b1.disabled = b2.disabled = disabled;
+  if (l1) b1.innerHTML = l1;
+  if (l2) b2.innerHTML = l2;
+}
+function resetBtns() { setBtns(false,'Submit → Pay (Option 1)','Submit → Pay (Option 2)'); }
+
+async function doSearch() {
+  const ref = document.getElementById('refInput').value.trim();
+  if (!ref) return;
+  currentRef = ref;
+  const btn = document.getElementById('searchBtn');
+  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>Searching...';
+  showSections(false);
+  setStatus('<div class="msg"><span class="spinner"></span>Fetching from tnurbanepay.tn.gov.in...</div>');
+  try {
+    const r = await fetch(`${PROXY}/fetch-property`, {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref})});
+    const d = await r.json();
+    if (!d.found) { setStatus(`<div class="msg err">❌ No data for "${ref}"</div>`); btn.disabled=false; btn.textContent='Search'; return; }
+    setStatus('');
+    renderLastPay(d.payments);
+    renderAssessee(d.assessee);
+    renderDue(d.dues, d.dueTotal, d.balanceAmt, d.advanceAmt, d.payableAmt);
+    currentFormData = d._formData || null;
+    showSections(true);
+    document.getElementById('sec-lastpay').scrollIntoView({behavior:'smooth'});
+  } catch(e) {
+    setStatus(`<div class="msg err">❌ Proxy not running! <code>node server.js</code><br><small>${e.message}</small></div>`);
+  }
+  btn.disabled=false; btn.textContent='Search';
+}
+
+function renderLastPay(payments) {
+  const tb = document.getElementById('body-lastpay');
+  if (!payments.length) { tb.innerHTML='<tr><td colspan="9" class="msg">No records.</td></tr>'; return; }
+  tb.innerHTML = payments.map((p,i) =>
+    `<tr><td>${i+1}</td><td>${p.receipt}</td><td>${p.assessmentNo}</td><td>${p.oldAssessmentNo}</td><td>${p.receiptDate}</td><td align="right">${p.amount}</td><td>${p.usage}</td><td class="${p.status==='SUCCESS'?'status-ok':''}">${p.status}</td><td><button class="print-btn" onclick="window.print()">Print</button></td></tr>`
+  ).join('');
+}
+function renderAssessee(a) {
+  const row = (l,v,b) => `<div class="det-row"><span class="det-label">${l}</span><span class="det-value${b?' bold-blue':''}">${v||'—'}</span></div>`;
+  document.getElementById('grid-assessee').innerHTML = `
+    ${row('Assessment No',a.assessmentNo)} ${row('Old Assessment No',a.oldAssessmentNo)}
+    ${row('Owner Name:',a.ownerName)} ${row('Owner Name in Tamil:',a.ownerNameTamil)}
+    ${row('Address:',`${a.doorNo} ${a.street}, ${a.city} ${a.pincode}`)}
+    ${row('Address (Tamil):',`${a.doorNoTamil} ${a.streetTamil}, ${a.cityTamil} ${a.pincodeTamil}`)}
+    ${row('Assessment Type:',a.assessmentType,true)} ${row('Zone:',a.zone)}
+    ${row('Ward:',a.ward)} ${row('Annual Rental Value (₹):',a.annualRentalValue)}
+    ${row('Half Yearly Tax (₹):',a.halfYearlyTax)} ${row('Assessment Status:',a.assessmentStatus,true)}
+    ${row('Usage:',a.usage,true)} ${row('Total Area Sqft:',a.totalAreaSqft,true)}`;
+}
+function renderDue(dues,total,balance,advance,payable) {
+  document.getElementById('body-due').innerHTML = dues.map(d =>
+    `<tr><td>${d.sno}</td><td align="center">${d.period}</td><td align="right">${d.taxDemand}</td><td align="right">${d.penaltyDemand}</td><td align="right">${d.taxCollected}</td><td align="right">${d.penaltyCollected}</td><td align="right">${d.taxBalance}</td><td align="right">${d.balancePenalty}</td><td align="right">${d.totalBalance}</td><td align="right">${d.delayPenalty}</td><td align="right">${d.incentive}</td><td align="right">${d.cumulativeBalance}</td></tr>`
+  ).join('');
+  if (total&&total.taxDemand)
+    document.getElementById('foot-due').innerHTML=`<tr><td>&nbsp;</td><td align="right"><strong>Total</strong></td><td align="right">${total.taxDemand}</td><td align="right">${total.penaltyDemand}</td><td align="right">${total.taxCollected}</td><td align="right">${total.penaltyCollected}</td><td align="right">${total.taxBalance}</td><td align="right">${total.balancePenalty}</td><td align="right">${total.totalBalance}</td><td></td><td></td><td></td></tr>`;
+  document.getElementById('val-balance').textContent=balance;
+  document.getElementById('val-advance').textContent=advance;
+  document.getElementById('val-payable').textContent=payable;
+  document.getElementById('paymentAmount').value=payable||'';
+}
+function clearAll() {
+  showSections(false); setStatus(''); setPayStatus('');
+  ['body-lastpay','grid-assessee','body-due'].forEach(id=>document.getElementById(id).innerHTML='');
+  currentRef=''; currentFormData=null;
+}
+document.getElementById('refInput').addEventListener('keydown',e=>{ if(e.key==='Enter') doSearch(); });
+
+/* ════════════════════════════════════════════
+   OPTION 1 — Normal full-page POST to govt site
+   NOT AJAX — browser load ஆகும், conf page வரும்
+   ════════════════════════════════════════════ */
+function doPaymentOption1() {
+  const amount = document.getElementById('paymentAmount').value.trim();
+  if (!amount) { setPayStatus('<div class="msg err">⚠️ Payment Amount enter பண்ணுங்க</div>'); return; }
+  if (!currentRef || !currentFormData) { setPayStatus('<div class="msg err">⚠️ முதல்ல Search பண்ணுங்க</div>'); return; }
+
+  const fd = currentFormData;
+
+  // Normal full page POST (not AJAX) — browser navigates to govt site
+  // Use btnSubmit directly (not AJAX UpdatePanel trigger)
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://tnurbanepay.tn.gov.in/PT_CPPaymentDetails.aspx';
+  form.target = '_blank';
+  form.style.display = 'none';
+
+  // Key difference from before: NO __ASYNCPOST, NO X-MicrosoftAjax
+  // This makes it a normal full-page POST → browser gets full HTML redirect
+  const fields = {
+    '__EVENTTARGET': 'ctl00$PageContent$btnSubmit',
+    '__EVENTARGUMENT': '',
+    '__LASTFOCUS': '',
+    '__VIEWSTATE': fd.viewstate,
+    '__VIEWSTATEGENERATOR': fd.viewstateGen,
+    '__EVENTVALIDATION': fd.eventValidation,
+    '__VIEWSTATEENCRYPTED': '',
+    'ctl00$alert_msg': '',
+    'ctl00$PageContent$hdnref': fd.hdnref,
+    'ctl00$PageContent$totamt_value': fd.totamt,
+    'ctl00$PageContent$HdPropertyTypeID': fd.propTypeId || '1',
+    'ctl00$PageContent$rdbulb': '0',
+    'ctl00$PageContent$txtRefNumber': currentRef,
+    'ctl00$PageContent$txt_OldNo': '',
+    'ctl00$PageContent$TextBox1': '',
+    'ctl00$PageContent$txt_RemittersName': '',
+    'ctl00$PageContent$txtTransactionAmount': amount,
+  };
+
+  Object.entries(fields).forEach(([name,value]) => {
+    const inp = document.createElement('input');
+    inp.type='hidden'; inp.name=name; inp.value=value||'';
+    form.appendChild(inp);
+  });
+
+  document.body.appendChild(form);
+  form.submit();
+  setTimeout(() => document.body.removeChild(form), 2000);
+
+  setPayStatus(`<div class="msg" style="color:#2a7a2a;background:#f0fff0;border:1px solid #2a7a2a;padding:10px;border-radius:4px">
+    ✅ <b>Option 1: Submitted!</b> புதுசா tab-ல் confirmation page வரும்.<br>
+    <small>Ref: <b>${currentRef}</b> | Amount: <b>₹${amount}</b></small>
+  </div>`);
+}
+
+/* ════════════════════════════════════════════
+   OPTION 2 — Session Bridge
+   Server: session→search→submit → token
+   Browser: localhost:3000/bridge?token=
+   Captcha proxied → confirm proxied → bank page
+   ════════════════════════════════════════════ */
+async function doPaymentOption2() {
+  const amount = document.getElementById('paymentAmount').value.trim();
+  if (!amount) { setPayStatus('<div class="msg err">⚠️ Payment Amount enter பண்ணுங்க</div>'); return; }
+  if (!currentRef) { setPayStatus('<div class="msg err">⚠️ முதல்ல Search பண்ணுங்க</div>'); return; }
+
+  setBtns(true,'Submit → Pay (Option 1)','<span class="spinner"></span>Processing...');
+  setPayStatus('<div class="msg"><span class="spinner"></span>Server-ல் session → search → submit... 10-15 sec காத்திருங்க</div>');
+
+  try {
+    const resp = await fetch(`${PROXY}/pay-and-bridge`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref:currentRef,amount})});
+    const d = await resp.json();
+
+    if (!d.success) { setPayStatus(`<div class="msg err">❌ ${d.error||'Server error'}</div>`); resetBtns(); return; }
+
+    window.open(d.bridgeUrl,'_blank');
+
+    setPayStatus(`<div class="msg" style="color:#1565c0;background:#e3f2fd;border:1px solid #1565c0;padding:10px;border-radius:4px">
+      ✅ <b>Option 2: Bridge ready!</b> புதுசா tab-ல் confirmation page திறந்தது.<br>
+      <small>Ref: <b>${currentRef}</b> | Amount: <b>₹${amount}</b></small><br>
+      <small style="color:#555">⚠️ Captcha enter பண்ணி → "I agree" check பண்ணி → Confirm click பண்ணுங்க → Bank page வரும்</small>
+    </div>`);
+  } catch(e) {
+    setPayStatus(`<div class="msg err">❌ ${e.message}<br><small><code>node server.js</code> run ஆகுதா?</small></div>`);
+  }
+  resetBtns();
+}
+</script>
+</body>
+</html>
