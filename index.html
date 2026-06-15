@@ -2,8 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="tn_logo_final.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TN Property Tax - Citizen Web Portal</title>
+    <title>TN_Urban_Property Tax</title>
     <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
@@ -380,6 +381,7 @@
           <button class="btn btn-green" id="searchBtn" onclick="doSearch()">
             Search
           </button>
+          <button class="btn" id="historyBtn" onclick="doViewHistory()" style="background:#1565c0;color:#fff;font-weight:bold;">View Payment History</button>
           <button class="btn" onclick="window.print()">Print</button>
           <!-- <button class="btn" onclick="clearAll()">Back</button> -->
         </div>
@@ -415,6 +417,10 @@
         </table>
       </fieldset>
 
+      <fieldset class="result-section" id="sec-history" style="display:none;"><legend>Payment History</legend>
+        <div id="history-info" style="font-size:12px;margin-bottom:8px;color:#444;"></div>
+        <table class="tbl"><thead><tr><th>S.No.</th><th>Receipt Number</th><th>Receipt Date</th><th>Amount</th><th>Status</th><th>Print</th></tr></thead>
+        <tbody id="body-history"></tbody></table></fieldset>
       <fieldset class="result-section" id="sec-assessee">
         <legend>Property Tax Assessee Details</legend>
         <div class="det-grid" id="grid-assessee"></div>
@@ -526,6 +532,7 @@
       }
 
       async function doSearch() {
+        var hs=document.getElementById('sec-history');if(hs)hs.style.display='none';historyToken=null;historyPayments=[];
         const ref = document.getElementById("refInput").value.trim();
         if (!ref) return;
         currentRef = ref;
@@ -749,6 +756,44 @@
         }
         resetBtns();
       }
+    
+      let historyToken=null,historyPayments=[],receiptWin=null;
+      async function doViewHistory(){
+        const ref=document.getElementById('refInput').value.trim();
+        if(!ref){setStatus('<div class="msg err">Assessment Number enter pannunga</div>');return;}
+        const hB=document.getElementById('historyBtn'),sB=document.getElementById('searchBtn');
+        hB.disabled=true;sB.disabled=true;hB.textContent='Loading...';
+        setStatus('<div class="msg"><span class="spinner"></span>Loading...</div>');
+        try{
+          const[sr,hr]=await Promise.all([
+            fetch(PROXY+'/fetch-property',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref})}),
+            fetch(PROXY+'/view-history',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({ref})})
+          ]);
+          const[sd,hd]=await Promise.all([sr.json(),hr.json()]);
+          setStatus('');
+          if(sd.found){currentRef=ref;renderLastPay(sd.payments);renderAssessee(sd.assessee);renderDue(sd.dues,sd.dueTotal,sd.balanceAmt,sd.advanceAmt,sd.payableAmt);currentFormData=sd._formData||null;showSections(true);}
+          if(hd.success){
+            historyToken=hd.token;historyPayments=hd.payments||[];
+            document.getElementById('history-info').innerHTML='<b>Municipality:</b> '+(hd.org||'-')+' | <b>Assess No:</b> '+(hd.assessNo||ref)+' | <b>Owner:</b> '+(hd.owner||'-')+'<br><b>Address:</b> '+hd.doorNo+' '+hd.street+' '+hd.pincode;
+            document.getElementById('body-history').innerHTML=historyPayments.length
+              ?historyPayments.map(function(p,i){return'<tr><td>'+(i+1)+'</td><td style="font-family:monospace;font-size:11px">'+p.receipt+'</td><td>'+p.date+'</td><td align="right"><b>'+p.amount+'</b></td><td class="'+(p.status==='SUCCESS'?'status-ok':'')+'" >'+p.status+'</td><td><button class="print-btn" onclick="doPrintReceipt('+i+')">Print</button></td></tr>';}).join('')
+              :'<tr><td colspan="6" class="msg">No records.</td></tr>';
+            document.getElementById('sec-history').style.display='block';
+          }
+          document.getElementById('sec-lastpay').scrollIntoView({behavior:'smooth'});
+        }catch(e){setStatus('<div class="msg err">Error: '+e.message+'</div>');}
+        hB.disabled=false;sB.disabled=false;hB.textContent='View Payment History';
+      }
+      function doPrintReceipt(idx){
+        if(!historyToken)return;
+        var p=historyPayments[idx];if(!p||!p.btnName)return;
+        // Pass exact receipt number for filename
+        var receiptNo = encodeURIComponent(p.receipt||'');
+        var url=PROXY+'/print-receipt?token='+encodeURIComponent(historyToken)+'&btn='+encodeURIComponent(p.btnName)+'&receipt='+receiptNo;
+        // Always open new window so each receipt gets correct filename
+        window.open(url,'_blank','width=1050,height=800,scrollbars=yes');
+      }
+
     </script>
   </body>
 </html>
