@@ -1,0 +1,855 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>
+
+</title><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta content="width=device-width, initial-scale=1.0" name="viewport" /><meta name="description" /><meta name="author" /><meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    
+    <!--end NEW from Karthik -->
+    
+
+    <!-- Fonts START -->
+    <link href="assets/global/css/font.css" rel="stylesheet" type="text/css" />
+    <!-- Fonts END -->
+
+    <!-- Global styles START -->
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" /><link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" /><link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" /><link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <!-- Global styles END -->
+
+    <!-- Page level plugin styles START -->
+    <link href="assets/global/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" />
+    <!-- Page level plugin styles END -->
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" /><link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/Scroller/css/dataTables.scroller.min.css" /><link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/extensions/ColReorder/css/dataTables.colReorder.min.css" /><link rel="stylesheet" type="text/css" href="assets/global/plugins/datatables/plugins/bootstrap/dataTables.bootstrap.css" /><link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
+    <!-- Theme styles START -->
+
+    <link href="assets/global/css/components.css" rel="stylesheet" /><link href="assets/frontend/layout/css/style.css" rel="stylesheet" /><link href="assets/frontend/layout/css/style-responsive.css" rel="stylesheet" /><link href="assets/frontend/layout/css/themes/green.css" rel="stylesheet" /><link href="assets/frontend/layout/css/custom.css" rel="stylesheet" /><link href="assets/frontend/pages/css/jquery-ui.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+    
+
+    <link href="assets/global/css/change_password.css" rel="stylesheet" type="text/css" /><link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" /><link href="assets/admin/layout/css/Test.css" rel="stylesheet" type="text/css" /><link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" /><link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" /><link rel="stylesheet" href="assets/global/css/icon.css" /><link rel="stylesheet" href="assets/global/css/ie7/ie7.css" />
+
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <script src="assets/admin/pages/scripts/form-wizard.js"></script>
+
+    <!-- Date Picker -->
+    
+    <!-- Theme styles END -->
+    <!-- Script -->
+
+    
+    <script type="text/javascript">
+        document.onmousedown = disableclick;
+        status = "Right Click is Disabled";
+        function disableclick(event) {
+            if (event.button == 2) {
+                alert(status);
+                return false;
+            }
+        }
+    </script>
+
+    <!--Backspace prevention by Baskar-->
+    <script type="text/javascript">
+        function changeHashOnLoad() {
+            window.location.href += "#";
+            setTimeout("changeHashAgain()", "50");
+        }
+
+        function changeHashAgain() {
+            window.location.href += "1";
+        }
+
+        var storedHash = window.location.hash;
+        window.setInterval(function () {
+            if (window.location.hash != storedHash) {
+                window.location.hash = storedHash;
+            }
+        }, 50);
+
+        function Browser_Close() {
+            alert("success");
+            PageMethods.BrowserCloseMethod();
+        }
+    </script>
+    <style>
+        .margin-top-10 {
+            margin-top: -4% !important;
+            margin-left: 50% !important;
+        }
+
+        .user_info {
+            margin-top: -15% !important;
+        }
+    </style>
+    <!--End Backspace prevention-->
+
+    
+
+    <script type="text/javascript">
+
+        var clicked = false;
+        function CheckBrowser() {
+            if (clicked == false) {
+                //Browser closed   
+            } else {
+                //redirected
+                clicked = false;
+            }
+        }
+        function bodyUnload() {
+
+            if (clicked == false)//browser is closed  
+            {
+                if (window.location.href.indexOf("localhost") > -1) {
+
+                    var urlChunks = location.href;
+                    var urlsplit = location.href.split("/");
+                    var count = 0;
+
+                    if (window.location.href.indexOf("fid") > -1) {
+                        var urlfid = location.href.split("fid");
+
+                        count = urlfid[1].split("/").length - 1;
+                    }
+
+                    if ((urlsplit.length - count > 3) && (urlsplit.length - count <= 4)) {
+
+                        var request = GetRequest();
+                        request.open("POST", "./Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+                    if ((urlsplit.length - count > 4) && (urlsplit.length - count <= 5)) {
+                        var request = GetRequest();
+                        request.open("POST", "../Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+
+                    if ((urlsplit.length - count > 5) && (urlsplit.length - count <= 6)) {
+                        var request = GetRequest();
+                        request.open("POST", "../../Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+                }
+                else if (window.location.href.indexOf("tnurbaneseva.tn.gov.in") > -1) {
+
+                    var urlChunks = location.href;
+                    var urlsplit = location.href.split("/");
+                    var count = 0;
+
+                    if (window.location.href.indexOf("fid") > -1) {
+                        var urlfid = location.href.split("fid");
+
+                        count = urlfid[1].split("/").length - 1;
+                    }
+
+                    if ((urlsplit.length - count > 3) && (urlsplit.length - count <= 4)) {
+
+                        var request = GetRequest();
+                        request.open("POST", "./Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+                    if ((urlsplit.length - count > 4) && (urlsplit.length - count <= 5)) {
+                        var request = GetRequest();
+                        request.open("POST", "../Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+
+                    if ((urlsplit.length - count > 5) && (urlsplit.length - count <= 6)) {
+                        var request = GetRequest();
+                        request.open("POST", "../../Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+                }
+                else {
+
+                    var urlChunks = location.href;
+                    var urlsplit = location.href.split("/");
+                    var count = 0;
+
+                    if (window.location.href.indexOf("fid") > -1) {
+                        var urlfid = location.href.split("fid");
+
+                        count = urlfid[1].split("/").length - 1;
+                    }
+
+                    if ((urlsplit.length - count > 4) && (urlsplit.length - count <= 5)) {
+
+                        var request = GetRequest();
+                        request.open("POST", "./Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+                    if ((urlsplit.length - count > 5) && (urlsplit.length - count <= 6)) {
+                        var request = GetRequest();
+                        request.open("POST", "../Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+
+                    if ((urlsplit.length - count > 6) && (urlsplit.length - count <= 7)) {
+                        var request = GetRequest();
+                        request.open("POST", "../../Test.aspx", false);
+                        request.send();
+                        alert(urlsplit);
+                    }
+                }
+            }
+        }
+
+        function GetRequest() {
+            var xmlhttp;
+            if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            }
+            else {// code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            return xmlhttp;
+        }
+    </script>
+
+    
+
+    <script type="text/javascript">
+        function isEnterKey(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode == 8) {
+                if (window.event.srcElement.type == "text" || window.event.srcElement.type == "textarea") {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            else if (charCode == 122) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+    </script>
+    <script type="text/javascript">
+        function ShowpImagePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#ImgPrv').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+    <script language="Javascript" type="text/javascript">
+        function Yuva(fld, evt) {
+            if (isEnterKey(evt)) {
+                event.keyCode = 0;
+                event.returnValue = false;
+                alert("Key Disabled");
+            }
+            else {
+                return true;
+            }
+        }
+        function tamil(event) {
+            event = (event) ? event : window.event;
+            var charCode = (event.which) ? event.which : event.keyCode;
+            var alertmsg = document.getElementById("alert_msg").value;
+            if ((charCode <= 123) && (event.keyCode != 9) && (event.keyCode != 8) && (charCode != 46) && (charCode >= 47) && (charCode >= 58) && (charCode != 44) && (event.which != 32)) {
+                if (alertmsg == "false") {
+                    alert("On scroll lock and then type for Tamil");
+                    var x = document.getElementById("alert_msg");
+                    x.value = "true";
+                    alertmsg = x.value;
+                }
+                return false;
+            }
+        }
+    </script>
+    <style type="text/css">
+        .PnlDesign {
+            border: solid 1px #000000;
+            height: 150px;
+            width: 300px;
+            overflow-y: scroll;
+            background-color: #EAEAEA;
+            font-size: 15px;
+            font-family: Arial;
+        }
+
+        .txtbox {
+            background-image: url(/cmabd/images/drpdwn.png);
+            background-position: right center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            cursor: hand;
+        }
+    </style>
+    <script type="text/javascript">
+
+        function OnlyAmount(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46 && charCode != 37 && charCode != 39) {
+                return false;
+            }
+            return true;
+        }
+        function IsNumber(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 8 && charCode != 9 && charCode != 32) {
+                return false;
+            }
+            //charCode != 46
+            return true;
+
+        }
+
+        function IsNumberslash(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 8 && charCode != 9 && charCode != 47) {
+                return false;
+            }
+            //charCode != 46
+            return true;
+
+        }
+
+
+
+
+        function IsDecimalBD(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && charCode != 46 && charCode != 37 && charCode != 39) {
+                return false;
+            }
+            return true;
+        }
+
+        function IsAllowAlphaInt(evt) {
+            //  PageMethods.SetScrollLockKey(false);
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if ((charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && (charCode < 48 || charCode > 57) && charCode != 46 && charCode != 37 && charCode != 39 && charCode != 8 && charCode != 9 && charCode != 32) {
+                return false;
+            }
+            //   PageMethods.SetScrollLockKey(false);
+            return true;
+        }
+
+        function IsAllowAlpha(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (evt.charCode > 123) {
+                //  window.event.keyCode = 0;
+                alert("Scroll lock is on.First off scroll lock and then type in english");
+                return false;
+            }
+
+            if ((charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && charCode != 8 && charCode != 9 && charCode != 32) {
+                return false;
+            }
+            return true;
+
+        }
+
+
+        function IsAlphaNumeric(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57) && (charCode < 65 || charCode > 90) && (charCode < 97 || charCode > 122) && charCode != 46 && charCode != 8 && charCode != 9 && charCode != 32 && charCode != 47) {
+                if (charCode == 45 || charCode == 44) return true;
+                return false;
+            }
+            //charCode != 46
+            return true;
+        }
+
+
+        function IsDecimal(eventObj) {
+            var keycode;
+            if (eventObj.keyCode) //For IE
+                keycode = eventObj.keyCode;
+            else if (eventObj.Which)
+                keycode = eventObj.Which;  // For FireFox
+            else
+                keycode = eventObj.charCode; // Other Browser
+
+            if (keycode != 8) //if the key is the backspace key
+            {
+                if (keycode < 46 || keycode > 57 || (keycode == 47) || (keycode == 48)) //if not a number
+                    return false; // disable key press
+                else
+                    return true; // enable key press
+            }
+        }
+
+        function IsEmail(id) {
+            var email = document.getElementById(id);
+            var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+            if (!filter.test(email.value)) {
+                document.getElementById(id).focus();
+                $('.fld1-error').html('Invalid email address');
+                $('#PageContent_txtBirthPlaceTypeName').css('border-color', 'red');
+                return false;
+            }
+        }
+
+        function NumericValidation(eventObj) {
+            var keycode;
+            //alert(eventObj.keyCode);
+            if (eventObj.keyCode) //For IE
+                keycode = eventObj.keyCode;
+            else if (eventObj.Which)
+                keycode = eventObj.Which;  // For FireFox
+            else
+                keycode = eventObj.charCode; // Other Browserheader-navigation pull-right font-transform-inherit
+
+            if (keycode != 8) //if the key is the backspace key
+            {
+                if (keycode < 48 || keycode > 57) //if not a number
+                    return false; // disable key press
+                else
+                    return true; // enable key press
+            }
+        }
+
+        function allowOnlyNumber(evt) {
+            evt = (evt) ? evt : window.event;
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+
+    </script>
+
+    <script type="text/javascript">
+
+        $(function () {
+            var pgurl = window.location.href;
+
+            $(this).addClass("active");
+
+            $("#JAJ ul li").click(function () {
+
+                $(this).addClass("active");
+
+            })
+        });
+
+
+
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#Propertylist")
+                .addClass("active");
+        });
+    </script>
+
+
+</head>
+<body class="corporate" oncontextmenu="return false" onload="changeHashOnLoad()" onunload="bodyUnload();" onclick="clicked=true;">
+
+    <form method="post" action="./PT_DirectViewPaymentDet.aspx" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=zQoiTf-a8dSjZDmxKIl0UM41B5v0EM7-DrQgBMD5yZmynAAXItYgQNGgEx03DCllzJomGJ3lqzngFeeHhOyO7_qFb541&amp;t=637454266939909757" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=UDtsLiXigH4W0KzHLhG4o8aysYpunNHqYqvU58O_8GrGhtLTJdxatMINghqyyN3Aayb95QPmtnmWE9plvB--2SJ-xGq2IJqxEk_eyoSyds6ruxkze9tl3x_IXQjkzDxu_Rxf3Vfy45-zIQdp84jZwz01eC81&amp;t=2fe674eb" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=0CPkAvnFFwn6lo9t0Mqh6EFAp1y8gaFMqD4WckgWU4VSkAg28dvWzqrHtt7gPPoKbICQILGDQESAxC0V_6igGIcUMWpyCVahfBdYfEPWoNlkvQOat3DmB2HGCaIY-AP2NhyFrvI_DSPaKuTkUSiOw_JGnbiUtpLY18rt98VHml83VGJg0&amp;t=2fe674eb" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="ED1BAC93" />
+	<input type="hidden" name="__VIEWSTATEENCRYPTED" id="__VIEWSTATEENCRYPTED" value="" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="nCM6D64ZebtlYxWlc7jXg8A91F1H/ct5RPXIXVLBIoOOArn3L58UbAuiFK4GvC6vRVwVK/UgoGuxT66fOk5DjEX3nPAz3k2MakoBpoLjHzzx5jSPnooxUG0W4IvNEgsLLanVVHyS4BN2u2hI6DIu2ktLaG6j8x6W2imF5+tFI7hryh99f7Au3CQ77TdWydARyfN94QLWYKwND7QnhXe1h8bP5YQ=" />
+</div>
+        <input type="hidden" name="ctl00$alert_msg" id="alert_msg" />
+        <div class="color-panel hidden-sm">
+            <div class="color-mode-icons icon-color"></div>
+            <div class="color-mode-icons icon-color-close"></div>
+            <div class="color-mode">
+                <p>THEME COLOR</p>
+                <ul class="inline">
+                    <li class="color-green current color-default" data-style="green"></li>
+                    <li class="color-blue" data-style="blue"></li>
+                    <li class="color-red" data-style="red"></li>
+                    <li class="color-orange" data-style="orange"></li>
+                    <li class="color-gray" data-style="gray"></li>
+                    <li class="color-turquoise" data-style="turquoise"></li>
+                </ul>
+            </div>
+        </div>
+        <div class="header">
+            <div class="container-fluid">
+
+                
+                <div class="col-md-4 col-sm-12 text-center ">
+                    
+                         <h3 style="color: #41505F;padding-top:25px;">Citizen Web Portal</h3>
+               </div>
+                <div class="col-md-8 col-sm-12  pull-right">
+                    
+
+                </div>
+
+
+
+                <a href="javascript:void(0);" class="mobi-toggler"><i class="fa fa-bars "></i></a>
+
+                <!-- BEGIN NAVIGATION -->
+                <!-- BEGIN TOP BAR LEFT PART -->
+
+
+                <div class="col-md-12 additional-nav rightfloat" style="margin:0; padding:0"  >
+                    
+                    
+
+                </div>
+                <!-- END NAVIGATION -->
+            </div>
+
+        </div>
+        <div style="clear: both"></div>
+        <!-- Header END -->
+        <div class="main">
+            <div class="container-fluid">
+                <!-- BEGIN SIDEBAR & CONTENT -->
+                <div class="row">
+                    <!-- BEGIN CONTENT -->
+                    <div class="col-md-12 col-sm-12">
+
+                        <div>
+                            <div class="row">
+                                <!-- BEGIN LEFT SIDEBAR -->
+
+
+                                
+
+                                <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ctl31', 'form1', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+
+
+                                
+    <script src="./assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+
+    <div class="col-md-10 col-sm-9">
+
+        <div>
+            <div class="col-md-12 col-sm-8">
+                <div>
+                    <div class="portlet">
+                        <div class="portlet">
+                            <div class="content-header">
+                                Payment Details
+                            </div>
+
+                        </div>
+
+                        <fieldset style="border-color:green;">
+                            <legend>Assesment Details</legend>
+                        
+                        <div class="form-horizontal" role="form">
+                            <div class="form-group col-sm-7" style="margin-top: 10px;"  >
+                                <label for="password" class="col-lg-5 control-label">Municipality/Corporation :<span class="require"> </span></label>
+                                <div class="col-lg-7" style="margin-top: 10px;">
+                                    <span id="PageContent_lblorg">KARUR CITY MUNICIPAL CORPORATION</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+
+                                <div class="content-page">
+                                    <div class="form-group" >
+                                        <label for="password" class="col-lg-5 control-label">Assesment Number :<span class="require"> </span></label>
+                                        <div class="col-lg-7" style="margin-top: 10px;">
+
+                                            <span id="PageContent_alblAssesmentnoText" class="asplable">082/001/900540</span>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password" class="col-lg-5 control-label">Owner Name :<span class="require"> </span></label>
+                                        <div class="col-lg-7" style="margin-top: 10px;">
+                                            <span id="PageContent_alblOwner" class="asplable">S.KARUPPANNA GOUNDER  </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="password" class="col-lg-5 control-label">Address Details :</label>
+                                        <div class="col-lg-7" style="margin-top: 10px;">
+                                          
+                                             <span id="PageContent_alblDoorNo" class="asplable">82</span>
+                                                            <span id="PageContent_aLabel8" class="asplable"></span>
+                                                            
+                                                            <span id="PageContent_alblStreet1" class="asplable">K.A. NAGAR</span>
+                                                            <span id="PageContent_aLabel11" class="asplable"></span>
+
+                                                            <span id="PageContent_alblArea1" class="asplable">Inam Karur</span>
+                                                            <span id="PageContent_aLabel13" class="asplable"></span>
+                                                            <span id="PageContent_albllocality1" class="asplable">Pilliyar Kovil nearer</span>
+                                                            <span id="PageContent_aLabel12" class="asplable"></span>
+                                                            <span id="PageContent_alblPincode" class="asplable">639006</span>
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6">
+
+                            <div class="content-page">
+
+                                <div class="form-horizontal" role="form">
+
+
+
+                                    <div class="form-group">
+                                        <label for="password" class="col-lg-5 control-label">Old Assesment Number<span class="require"> </span></label>
+                                        <div class="col-lg-7" style="margin-top: 10px;">
+                                            <span id="PageContent_alblOldAssesmentnoText" class="asplable"></span>
+
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <div class="form-group">
+                                        <label for="password" class="col-lg-5 control-label">Owner Name in Tamil </></label>
+                                        <div class="col-lg-7" style="margin-top: 10px;">
+                                            <span id="PageContent_alblOwnerintamil" class="asplable">S.KARUPPANNA GOUNDER  </span>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password" class="col-lg-5 control-label">Address Details</label>
+                                        <div class="col-lg-7" style="margin-top: 10px;">
+
+                                             <span id="PageContent_alblDoorNot" class="asplable">82</span>
+                                                            
+                                                            <span id="PageContent_aLabel15" class="asplable"></span>
+                                                            <span id="PageContent_alblStreet1ll" class="asplable">கே.ஏ. நகர்</span>
+                                                            <span id="PageContent_aLabel17" class="asplable"></span>
+                                                            <span id="PageContent_alblArea1ll" class="asplable">Inam Karur</span>
+                                                            <span id="PageContent_aLabel16" class="asplable"></span>
+                                                            <span id="PageContent_albllocality1ll" class="asplable">Pilliyar Kovil nearer</span>
+
+                                                            <span id="PageContent_aLabel1" class="asplable"></span>
+                                                            <span id="PageContent_alblPincodell" class="asplable">639006</span>
+                                           
+
+
+                                        </div>
+                                    </div>
+                                    
+
+
+
+                                    <!-- bala -->
+
+
+
+                                </div>
+                                <!-- end -->
+
+
+                            </div>
+                        </div>
+                            </fieldset>
+                        </br>
+                        
+
+                                <div id="asda" class="">
+                                    <div class="">
+                                        &nbsp;
+                                    </div>
+                                    <div>
+                                        <div>
+	<table class="altrowstable" cellspacing="2" cellpadding="9" Border="1" id="PageContent_gdvpaymenthistory" style="border-width:0px;border-style:Solid;font-family:Verdana;width:100%;">
+		<tr class="Gridcolor Gridcolor1">
+			<th scope="col">S.No</th><th scope="col">Receipt Number</th><th scope="col">Receipt Date</th><th scope="col">Amount</th><th scope="col">Status</th><th scope="col">Print</th>
+		</tr><tr>
+			<td align="left">
+                                                        1
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblServiceRequestNo_0">082/CP/24-25/0014204</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidDate_0">24-02-2025 19:00:15</span>
+                                                    </td><td align="right">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidAmount_0">1971.00</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastStatus_0">SUCCESS</span>
+                                                    </td><td align="center">
+                                                        
+                                                        <input type="submit" name="ctl00$PageContent$gdvpaymenthistory$ctl02$btnprint" value="Print" id="PageContent_gdvpaymenthistory_btnprint_0" class="btn btn-primary btn-primarynew" />
+                                                    </td>
+		</tr><tr style="background-color:#F9F9F9;">
+			<td align="left">
+                                                        2
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblServiceRequestNo_1">082/01/5/20-21/0008099</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidDate_1">07-12-2020 12:36:02</span>
+                                                    </td><td align="right">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidAmount_1">470.00</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastStatus_1">SUCCESS</span>
+                                                    </td><td align="center">
+                                                        
+                                                        <input type="submit" name="ctl00$PageContent$gdvpaymenthistory$ctl03$btnprint" value="Print" id="PageContent_gdvpaymenthistory_btnprint_1" class="btn btn-primary btn-primarynew" />
+                                                    </td>
+		</tr><tr>
+			<td align="left">
+                                                        3
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblServiceRequestNo_2">082/01/2/19-20/0013469</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidDate_2">21-01-2020 12:37:04</span>
+                                                    </td><td align="right">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidAmount_2">1210.00</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastStatus_2">SUCCESS</span>
+                                                    </td><td align="center">
+                                                        
+                                                        <input type="submit" name="ctl00$PageContent$gdvpaymenthistory$ctl04$btnprint" value="Print" id="PageContent_gdvpaymenthistory_btnprint_2" class="btn btn-primary btn-primarynew" />
+                                                    </td>
+		</tr><tr style="background-color:#F9F9F9;">
+			<td align="left">
+                                                        4
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblServiceRequestNo_3">082/01/17-18/0004429</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidDate_3">24-04-2017 13:22:13</span>
+                                                    </td><td align="right">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastPaidAmount_3">330.00</span>
+                                                    </td><td align="center">
+                                                        <span id="PageContent_gdvpaymenthistory_lblLastStatus_3">SUCCESS</span>
+                                                    </td><td align="center">
+                                                        
+                                                        <input type="submit" name="ctl00$PageContent$gdvpaymenthistory$ctl05$btnprint" value="Print" id="PageContent_gdvpaymenthistory_btnprint_3" class="btn btn-primary btn-primarynew" />
+                                                    </td>
+		</tr>
+	</table>
+</div>
+                                        <div border="0" style="margin-right: 0px;">
+                                            <i id="PageContent_lblview" style="margin-left: 222px;">You are viewing page 1of 1</i>
+                                        </div>
+
+                                    </div>
+                                </div>
+                        
+
+
+                        <span id="PageContent_lblmessage" style="color:Red;"></span>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        
+
+        <script type="text/javascript">
+            //alert("11")
+
+        </script>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="assets/global/plugins/jquery-3.6.1.min.js"></script>
+        
+        <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="assets/frontend/layout/scripts/back-to-top.js" type="text/javascript"></script>
+        <!-- END CORE PLUGINS -->
+
+        <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+        <script src="assets/global/plugins/fancybox/source/jquery.fancybox.pack.js" type="text/javascript"></script>
+        <!-- pop up -->
+
+        <script src="assets/frontend/layout/scripts/layout.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+            });
+
+        </script>
+        <script src="assets/global/scripts/jquery-ui.js"></script>
+
+        <script language="Javascript" type="text/javascript">
+            $(document).keydown(function (event) {
+                if (event.keyCode == 123) { // Prevent F12
+                    return false;
+                } else if (event.ctrlKey && event.shiftKey && event.keyCode == 73) { // Prevent Ctrl+Shift+I        
+                    return false;
+                }
+            });
+
+        </script>
+
+
+    
+
+<script type="text/javascript">
+//<![CDATA[
+window.open('MiscReceipt.aspx','mywindow', 'menubar=0,resizable=0,scrollbars=1,width=1000,height=550');//]]>
+</script>
+</form>
+</body>
+</html>
+
