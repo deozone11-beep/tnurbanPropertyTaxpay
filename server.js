@@ -480,34 +480,81 @@ res.end(`
   -webkit-print-color-adjust: exact !important;
   print-color-adjust: exact !important;
 }
-
+ 
 body{
   margin:0;
   text-align:center;
+  font-family: Arial, sans-serif;
 }
-
+ 
 #toolbar{
-  padding:15px;
-  border-top:1px solid #ccc;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 20px;
+  background: #fff;
+  border-top: 2px solid #e0e0e0;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.10);
+  z-index: 9999;
 }
-
+ 
+#toolbar button {
+  padding: 10px 28px;
+  border: none;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.1s, box-shadow 0.1s;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  letter-spacing: 0.3px;
+}
+ 
+#toolbar button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+ 
+#toolbar button:active {
+  transform: translateY(0px);
+}
+ 
+#btn-print {
+  background: linear-gradient(135deg, #1565c0, #1976d2);
+  color: #fff;
+}
+ 
+#btn-close {
+  background: linear-gradient(135deg, #e53935, #ef5350);
+  color: #fff;
+}
+ 
+#btn-pdf {
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  color: #fff;
+}
+ 
 @media print{
-  #toolbar{
-    display:none;
-  }
+  #toolbar{ display:none; }
+  body{ padding-bottom: 0; }
 }
 </style>
 </head>
 <body>
-
+ 
 ${exportResp.data}
-
+ 
 <div id="toolbar">
-  <button onclick="window.print()">🖨 Print</button>
-  <button onclick="window.close()">❌ Close</button>
-  <button onclick="savePdf()">📄 Save PDF</button>
-
-
+  <button id="btn-print" onclick="window.print()">🖨️ Print</button>
+  <button id="btn-pdf"   onclick="savePdf()">📄 Save PDF</button>
+  <button id="btn-close" onclick="window.close()">✖ Close</button>
 </div>
 <script>
 function savePdf() {

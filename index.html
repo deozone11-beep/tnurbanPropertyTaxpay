@@ -212,14 +212,47 @@
       </fieldset>
     </div>
     <script>
-      document.onmousedown = disableclick;
-      status = "Developer mode is Disabled";
-      function disableclick(event) {
-        if (event.button == 2) {
-          alert(status);
-          return false;
-        }
-      }
+//       document.onmousedown = disableclick;
+//       status = "Developer mode is Disabled";
+//       function disableclick(event) {
+//         if (event.button == 2) {
+//           alert(status);
+//           return false;
+//         }
+//       }
+
+//       document.addEventListener("keydown", function (e) {
+//     // F12
+//     if (e.key === "F12") {
+//         e.preventDefault();
+//         return false;
+//     }
+
+//     // Ctrl+Shift+I
+//     if (e.ctrlKey && e.shiftKey && e.key === "I") {
+//         e.preventDefault();
+//         return false;
+//     }
+
+//     // Ctrl+Shift+C
+//     if (e.ctrlKey && e.shiftKey && e.key === "C") {
+//         e.preventDefault();
+//         return false;
+//     }
+
+//     // Ctrl+Shift+J
+//     if (e.ctrlKey && e.shiftKey && e.key === "J") {
+//         e.preventDefault();
+//         return false;
+//     }
+
+//     // Ctrl+U (View Source)
+//     if (e.ctrlKey && e.key === "u") {
+//         e.preventDefault();
+//         return false;
+//     }
+// });
+
 
       const PROXY =
         window.location.hostname === "localhost" ||
@@ -313,7 +346,7 @@
         tb.innerHTML = payments
           .map(
             (p, i) =>
-              `<tr><td>${i + 1}</td><td>${p.receipt}</td><td>${p.assessmentNo}</td><td>${p.oldAssessmentNo}</td><td>${p.receiptDate}</td><td align="right">${p.amount}</td><td>${p.usage}</td><td class="${p.status === "SUCCESS" ? "status-ok" : ""}">${p.status}</td><td><button class="print-btn" onclick="window.print()">Print</button></td></tr>`,
+              `<tr><td>${i + 1}</td><td>${p.receipt}</td><td>${p.assessmentNo}</td><td>${p.oldAssessmentNo}</td><td>${p.receiptDate}</td><td align="right">${p.amount}</td><td>${p.usage}</td><td class="${p.status === "SUCCESS" ? "status-ok" : ""}">${p.status}</td><td><button class="print-btn" onclick="doPrintLastReceipt('${p.receipt}')">Print</button></td></tr>`,
           )
           .join("");
       }
@@ -506,6 +539,20 @@
           document.getElementById('sec-lastpay').scrollIntoView({behavior:'smooth'});
         }catch(e){setStatus('<div class="msg err">Error: '+e.message+'</div>');}
         hB.disabled=false;sB.disabled=false;hB.textContent='View Payment History';
+      }
+      function doPrintLastReceipt(receiptNo){
+        // Match receipt number in historyPayments to get btnName
+        if(!historyToken || !historyPayments.length){
+          alert('Please click "View Payment History" first, then try Print again.');
+          return;
+        }
+        var match = historyPayments.find(function(p){ return p.receipt === receiptNo; });
+        if(!match || !match.btnName){
+          alert('Receipt not found in history. Please click "View Payment History" button first.');
+          return;
+        }
+        var url=PROXY+'/print-receipt?token='+encodeURIComponent(historyToken)+'&btn='+encodeURIComponent(match.btnName)+'&receipt='+encodeURIComponent(receiptNo);
+        window.open(url,'_blank','width=1050,height=800,scrollbars=yes');
       }
       function doPrintReceipt(idx){
         if(!historyToken)return;
